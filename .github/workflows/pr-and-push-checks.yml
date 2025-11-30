@@ -12,9 +12,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "postgresql://user:password@localhost:5432/test" # Use mock db url for build step to allow postinstall pass
+      DATABASE_URL: "postgresql://user:password@localhost:5432/test"
+    
     steps:
       - uses: actions/checkout@v4
+      
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -26,26 +28,21 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - name: Enable corepack and setup pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.23.0 --activate
-
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma Client
         run: pnpm -C packages/db postinstall
 
-      - name: Check types on packages
+      - name: Check types
         run: pnpm run check-types
       
-      - name: Run Linting on packages with ESLint
+      - name: Run linting
         run: pnpm run lint
       
-      - name: Run Application Tests
-        run: pnpm run test
+      - name: Run tests
+        run: pnpm run test:coverage
 
-      - name: Build Monorepo with Turbo
+      - name: Build all apps
         run: pnpm turbo run build
         timeout-minutes: 10
