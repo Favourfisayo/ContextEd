@@ -1,4 +1,4 @@
-import prisma from "@studyrag/db";
+import prisma from "@studyRAG/db";
 
 /**
  * Save a user message and assistant response to the database

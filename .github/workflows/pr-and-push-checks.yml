@@ -37,9 +37,6 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm -C packages/db postinstall
 
-      - name: Generate Prisma Client
-        run: pnpm -C packages/db postinstall
-
       - name: Build everything
         run: pnpm turbo run build
         timeout-minutes: 10

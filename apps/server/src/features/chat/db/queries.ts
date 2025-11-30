@@ -1,4 +1,4 @@
-import prisma from "@studyrag/db";
+import prisma from "@studyRAG/db";
 
 /**
  * Retrieve all chat messages for a specific course
