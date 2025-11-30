@@ -11,11 +11,13 @@ const authRoutes = ["/auth/sign-in"];
 export async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
+	if (pathname === "/") {
+		return NextResponse.next();
+	}
+
 	// Check if route requires protection
-	const isProtectedRoute = protectedRoutes.some((route) =>
-		pathname.startsWith(route),
-	);
-	const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+	const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+	const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(route));
 
 	// Get session
 	const session = await getSession(`authjs.session-token=${request.cookies.get("authjs.session-token")?.value}`);
@@ -35,16 +37,7 @@ export async function proxy(request: NextRequest) {
 	return NextResponse.next();
 }
 
-// Configure which routes should be processed by this middleware
+
 export const config = {
-	matcher: [
-		/*
-		 * Match all request paths except for the ones starting with:
-		 * - api (API routes)
-		 * - _next/static (static files)
-		 * - _next/image (image optimization files)
-		 * - favicon.ico (favicon file)
-		 */
-		"/((?!api|_next/static|_next/image|favicon.ico).*)",
-	],
+	matcher: ["/dashboard/:path*", "/auth/sign-in"],
 };
