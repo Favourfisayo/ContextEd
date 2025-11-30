@@ -46,6 +46,7 @@ lerna-debug.log*
 # misc
 .DS_Store
 *.pem
+dev
 
 # local db
 *.db*
@@ -53,3 +54,6 @@ lerna-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+EMBEDDING_SETUP.md
+ocrHelper.ts

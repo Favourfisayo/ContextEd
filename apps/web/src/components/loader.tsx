@@ -1,9 +1,18 @@
-import { Loader2 } from "lucide-react";
+"use client"
+import { cn } from "@/lib/utils";
+import { Spinner } from "./ui/spinner";
 
-export default function Loader() {
+interface LoaderProps {
+	text?: string,
+	className?: string
+}
+export default function Loader({text, className}: LoaderProps) {
 	return (
-		<div className="flex h-full items-center justify-center pt-8">
-			<Loader2 className="animate-spin" />
+		<>
+		<div className={cn("flex gap-2 flex-1 items-center", className)}>
+		<Spinner/>
+		{text}
 		</div>
+		</>
 	);
 }

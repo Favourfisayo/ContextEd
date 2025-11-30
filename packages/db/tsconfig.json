@@ -5,6 +5,11 @@
 		"declarationMap": true,
 		"sourceMap": true,
 		"outDir": "dist",
-		"composite": true
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "es2023",
+		"strict": true,
+		"esModuleInterop": true
 	}
 }

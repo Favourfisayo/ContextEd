@@ -7,21 +7,43 @@
     "check-types": "tsc -b",
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "worker": "tsx src/features/courses/workers/embeddingWorker.ts",
+    "worker:dev": "tsx watch src/features/courses/workers/embeddingWorker.ts"
   },
   "dependencies": {
-    "express": "^5.1.0",
+    "@auth/express": "^0.12.1",
+    "@auth/prisma-adapter": "^2.11.1",
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/community": "^1.0.4",
+    "@langchain/core": "^1.0.6",
+    "@langchain/google-genai": "^2.0.0",
+    "@langchain/textsplitters": "^1.0.0",
+    "@studyRAG/db": "workspace:*",
+    "@studyrag/shared-schemas": "workspace:*",
+    "bullmq": "^5.64.1",
+    "chromadb": "^3.1.5",
     "cors": "^2.8.5",
     "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@studyRAG/db": "workspace:*"
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "ioredis": "^5.8.2",
+    "langchain": "^1.0.6",
+    "temp": "^0.9.4",
+    "uploadthing": "^7.7.4",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "@types/express": "^5.0.1",
+    "@types/connect-timeout": "^1.9.0",
     "@types/cors": "^2.8.17",
-    "tsx": "^4.19.2",
+    "@types/express": "^5.0.1",
+    "@types/express-rate-limit": "^6.0.2",
     "@types/node": "catalog:",
-    "tsdown": "catalog:"
+    "@types/request-ip": "^0.0.41",
+    "@types/temp": "^0.9.4",
+    "connect-timeout": "^1.9.1",
+    "tsdown": "catalog:",
+    "tsx": "^4.19.2",
+    "typescript": "catalog:"
   }
 }

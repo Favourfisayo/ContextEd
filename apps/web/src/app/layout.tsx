@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "studyRAG",
-	description: "studyRAG",
+	title: "ContextEd",
+	description: "Spark your learning and exam. prep journey by talking with your course notes! 🤩",
 };
 
 export default function RootLayout({

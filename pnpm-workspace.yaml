@@ -1,10 +1,17 @@
 packages:
   - apps/*
   - packages/*
+
 catalog:
+  '@prisma/client': ^7.0.1
+  '@types/node': ^22.13.11
   dotenv: ^17.2.2
-  zod: ^4.1.11
-  typescript: ^5.8.2
-  "@types/node": ^22.13.11
   tsdown: ^0.15.5
-  "@prisma/client": ^6.15.0
+  typescript: ^5.8.2
+  zod: ^4.1.11
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - canvas
+  - msgpackr-extract
+  - prisma

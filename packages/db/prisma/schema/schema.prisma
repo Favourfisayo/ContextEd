@@ -7,5 +7,105 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+enum EMBEDDING_STATUS {
+  PENDING
+  SUCCESS
+  FAILED
+}
+enum ROLE {
+  USER
+  ASSISTANT
+}
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  courses Course[]
+  messages Message[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+
+model Course {
+  id String @id @default(uuid())
+  course_title String 
+  course_code String
+  course_description String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+  user_id String
+  created_by User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  messages Message[]
+  course_documents CourseDoc[]
+
+  @@unique([course_code, user_id])
+}
+
+model CourseDoc {
+  id String @id @default(uuid())
+  file_url String
+  file_metadata Json
+  uploaded_at DateTime @default(now())
+  course_id String
+  course Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  embedding_status EMBEDDING_STATUS @default(PENDING)
+  embedding_error String?
+  job_id String? // BullMQ job ID for tracking
+}
+
+model Message {
+  id String @id @default(uuid())
+  role ROLE
+  message String
+  created_at DateTime @default(now())
+  course_id String
+  course Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  user_id String
+  user User @relation(fields: [user_id], references: [id])
+
+  @@index([course_id, created_at])
 }
