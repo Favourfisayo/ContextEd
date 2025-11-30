@@ -11,7 +11,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: "postgresql://user:password@localhost:5432/test" # Use mock db url for build step to allow postinstall pass
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
