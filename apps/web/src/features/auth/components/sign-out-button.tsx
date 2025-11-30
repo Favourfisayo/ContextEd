@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { useSignOut } from "../lib/mutations";
-import { Loader2 } from "lucide-react";
 import Loader from "@/components/loader";
 
 export function SignOutButton() {

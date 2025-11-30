@@ -1,0 +1,50 @@
+name: PR & Push Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.23.0
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Enable corepack and setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.23.0 --activate
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm -C packages/db postinstall
+
+      - name: Check types on packages
+        run: pnpm run check-types
+      
+      - name: Run Linting on packages with ESLint
+        run: pnpm run lint
+      
+      - name: Run Application Tests
+        run: pnpm run test
+
+      - name: Build Monorepo with Turbo
+        run: pnpm turbo run build
+        timeout-minutes: 10

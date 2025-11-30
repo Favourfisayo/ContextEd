@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Loader2, AlertCircle, CheckCircle2, RefreshCw } from "lucide-react";
+import { AlertCircle, CheckCircle2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { connectToSSEvents, getCourseEmbeddingStatus, retryEmbedding } from "../lib/embedding-status-api";
 import { toast } from "sonner";
@@ -61,7 +61,7 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
           .mutateAsync(doc.docId)
           .then(() => queryClient.invalidateQueries({ queryKey: ["embedding-status", courseId] }))
           .catch((err) => {
-            console.error("Retry failed for doc", doc.docId, err);
+            toast.error(`Retry for doc. ${doc.docId} failed: ${err}`)
             // swallow - continue other retries
           }),
       );
@@ -71,7 +71,7 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
       // Final refresh request to ensure UI is consistent
       await queryClient.invalidateQueries({ queryKey: ["embedding-status", courseId] });
     } catch (err) {
-      toast.error("Failed to submit retries");
+      toast.error(`Failed to submit retries: ${err}`);
     } finally {
       setIsRetrying(false);
     }
@@ -86,7 +86,6 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
   }
 
   if (error) {
-    console.error("Error fetching embedding status:", error);
     return (
       <div className="border-b bg-destructive/10 px-6 py-3">
         <div className="flex items-center gap-3">

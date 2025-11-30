@@ -141,6 +141,7 @@ router.post("/chat/:courseId/messages", streamLimiter, requireAuth, asyncHandler
       res.write(
         `data: ${JSON.stringify({ 
           type: "error", 
+          error,
           message: "Failed to generate response. Please try again." 
         })}\n\n`
       );

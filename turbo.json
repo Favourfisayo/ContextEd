@@ -8,8 +8,18 @@
 			"outputs": ["dist/**"]
 		},
 		"lint": {
-			"dependsOn": ["^lint"]
+			"dependsOn": ["^lint"],
+			"outputs": [],
+			"cache": false
 		},
+		"test": {
+			"dependsOn": ["^test"],
+			"outputs": ["coverage/**"]
+		},
+        "test:coverage": {
+            "dependsOn": ["^test:coverage"],
+            "outputs": ["coverage/**"]
+        },
 		"check-types": {
 			"dependsOn": ["^check-types"]
 		},

@@ -1,4 +1,3 @@
-import { ApiError } from "@/lib/errors";
 import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
@@ -34,14 +33,13 @@ export async function getSession(cookieHeader?: string): Promise<Session | null>
 			headers,
 		});
 		if (!response.ok) {
-			console.log(response)
 			return null;
 		}
 
 		const session: Session = await response.json();
 		return session || null;
 	} catch (error) {
-		console.error("Failed to fetch session:", error);
+		toast.error(`SessionError: ${error}`)
 		return null;
 	}
 }
@@ -63,6 +61,7 @@ export async function getCsrfToken(): Promise<string | null> {
 		const data = await response.json();
 		return data.csrfToken || null;
 	} catch (error) {
+		toast.error(`Error getting auth token: ${error}`)
 		return null;
 	}
 }
@@ -101,6 +100,7 @@ export async function getCurrentUser(): Promise<User | null> {
 		const data = await response.json();
 		return data.user || null;
 	} catch (error) {
+		toast.error(`User fetch error: ${error}`)
 		return null;
 	}
 }

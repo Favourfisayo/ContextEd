@@ -1,5 +1,6 @@
 import type { ChatMessage, SendMessageInput, ChatMode } from "@studyrag/shared-schemas";
 import {  parseApiError } from "@/lib/errors";
+import { toast } from "sonner";
 
 const API_URL = process.env.NEXT_PUBLIC_SERVER_PROTECTED_URL;
 
@@ -71,6 +72,7 @@ export async function sendMessage(
             const data = JSON.parse(line.slice(6));
             controller.enqueue(data as StreamEvent);
           } catch (e) {
+            toast.error(`streaming error: ${e}`)
           }
         }
       }

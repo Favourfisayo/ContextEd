@@ -7,7 +7,7 @@ import { ChatInput } from "@/features/chat/components/chat-input";
 import { EmbeddingStatusBanner } from "@/features/courses/components/embedding-status-banner";
 import { useCourse } from "@/features/courses/lib/queries";
 import type { ChatMode } from "@studyrag/shared-schemas";
-import { use, useEffect } from "react";
+import { use } from "react";
 import { useChat } from "@/features/chat/hooks/use-chat";
 
 interface ChatPageProps {

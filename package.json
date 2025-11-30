@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo -F server test:coverage",
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",

@@ -103,7 +103,7 @@ export async function getCourseEmbeddingStatus(courseId: string): Promise<{
           }
         }
       } catch (error) {
-        console.error(`Error fetching job ${doc.job_id}:`, error);
+        throw error
       }
     }
 

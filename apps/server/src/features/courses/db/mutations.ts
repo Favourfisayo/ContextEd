@@ -149,6 +149,7 @@ async function deleteCourseFilesFromStorage(fileKeys: string[]) {
 	try {
 		await utapi.deleteFiles(fileKeys);
 	} catch (error) {
+		console.error(error)
 		// We don't throw here to allow the process to continue if files are already gone or inaccessible
 		// Ideally, we would check for specific "not found" errors
 	}

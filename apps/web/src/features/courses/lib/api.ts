@@ -1,6 +1,5 @@
 import { parseApiError } from "@/lib/errors";
 import { type CourseCreateInput, type CourseDocCreateInput, type CourseUpdateInput } from "@studyrag/shared-schemas";
-import { Prisma } from "@studyRAG/db"
 const API_URL = process.env.NEXT_PUBLIC_SERVER_PROTECTED_URL;
 
 export interface Course {

@@ -13,7 +13,6 @@ interface ChatMessageProps {
 export default function ChatMessage({
   role,
   message,
-  isStreaming = false,
   isPending = false,
 }: ChatMessageProps) {
   const isUser = role === "USER";
@@ -37,7 +36,7 @@ export default function ChatMessage({
         <Markdown
           remarkPlugins={[RemarkGfm]}
           components={{
-            code({ className, children, ...props }) {
+            code({ children, ...props }) {
               const { inline } = props as { inline?: boolean };
 
               if (inline) {

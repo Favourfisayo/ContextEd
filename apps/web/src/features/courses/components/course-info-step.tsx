@@ -25,7 +25,7 @@ export function CourseInfoStep({ onNext, courseId, initialData }: CourseInfoStep
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { errors },
 	} = useForm<CourseCreateInput>({
 		resolver: zodResolver(courseCreateSchema),
 		defaultValues: initialData || {

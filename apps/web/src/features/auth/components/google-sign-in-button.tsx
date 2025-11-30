@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { signInWithGoogle } from "../lib/api";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function GoogleSignInButton() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +13,7 @@ export function GoogleSignInButton() {
 		try {
 			await signInWithGoogle();
 		} catch (error) {
+			toast.error(`SignIn failed: ${error}`)
 			setIsLoading(false);
 		}
 	};

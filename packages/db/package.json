@@ -13,6 +13,9 @@
   },
   "scripts": {
     "build": "tsdown",
+    "lint": "eslint . --ext .ts,.tsx",
+    "check-types": "tsc -b",
+    "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
@@ -20,7 +23,9 @@
   },
   "devDependencies": {
     "prisma": "^7.0.1",
-    "tsdown": "catalog:"
+    "tsdown": "catalog:",
+    "@studyrag/eslint-config": "workspace:*",
+    "eslint": "^9.39.1"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -28,6 +33,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "catalog:",
+    "@prisma/client-runtime-utils": "7.0.1",
     "@prisma/extension-accelerate": "^2.0.2",
     "dotenv": "catalog:",
     "zod": "catalog:"

@@ -140,7 +140,7 @@ export async function* generateStreamingResponse(
       }
     }
   } catch (error) {
-    throw new ExternalAPIError("Failed to generate response from AI model", "GoogleAI");
+    throw new ExternalAPIError(`Failed to generate response from AI model: ${error}`, "GoogleAI");
   }
 }
 
@@ -155,6 +155,6 @@ export async function generateResponse(prompt: string): Promise<string> {
     const response = await model.invoke(prompt);
     return response.content.toString();
   } catch (error) {
-    throw new ExternalAPIError("Failed to generate response from AI model", "GoogleAI");
+    throw new ExternalAPIError(`Failed to generate response from AI model: ${error}`, "GoogleAI");
   }
 }
