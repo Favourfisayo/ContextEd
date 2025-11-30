@@ -39,7 +39,7 @@ export async function getSession(cookieHeader?: string): Promise<Session | null>
 		const session: Session = await response.json();
 		return session || null;
 	} catch (error) {
-		toast.error(`SessionError: ${error}`)
+		console.error(`SessionError: ${error}`)
 		return null;
 	}
 }
