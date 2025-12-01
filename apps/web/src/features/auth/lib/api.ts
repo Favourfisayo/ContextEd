@@ -1,6 +1,9 @@
 import { toast } from "sonner";
 
-const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
+// Use relative path for API calls to leverage Next.js rewrites
+// This ensures cookies are set on the frontend domain
+const API_URL = ""; 
+
 export interface User {
 	id?: string;
 	name?: string | null;

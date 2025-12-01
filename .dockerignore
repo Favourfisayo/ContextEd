@@ -1,0 +1,214 @@
+# flyctl launch added from .gitignore
+# Dependencies
+**/node_modules
+**/.pnp
+**/.pnp.js
+
+# Build outputs
+**/dist
+**/build
+**/*.tsbuildinfo
+
+# Environment variables
+**/.env
+**/.env*.local
+
+# IDEs and editors
+**/.vscode/*
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+**/.idea
+**/*.swp
+**/*.swo
+**/*~
+**/.DS_Store
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/lerna-debug.log*
+**/.pnpm-debug.log*
+
+# Turbo
+**/.turbo
+
+# Better-T-Stack
+**/.alchemy
+
+# Testing
+**/coverage
+**/.nyc_output
+
+# Misc
+**/*.tgz
+**/.cache
+**/tmp
+**/temp
+
+**/studyrag_docs.md
+
+# flyctl launch added from apps/server/.gitignore
+# prod
+apps/server/**/dist
+apps/server/build
+apps/server/out
+
+# dev
+apps/server/**/.yarn
+!apps/server/**/.yarn/patches
+!apps/server/**/.yarn/plugins
+!apps/server/**/.yarn/releases
+!apps/server/**/.yarn/versions
+apps/server/**/.vscode/*
+!apps/server/**/.vscode/launch.json
+!apps/server/**/.vscode/*.code-snippets
+apps/server/**/.idea/workspace.xml
+apps/server/**/.idea/usage.statistics.xml
+apps/server/**/.idea/shelf
+apps/server/**/.wrangler
+apps/server/**/.alchemy
+apps/server/.next
+apps/server/**/.vercel
+apps/server/**/prisma/generated
+
+
+# deps
+apps/server/**/node_modules
+apps/server/node_modules
+apps/server/.pnp
+apps/server/**/.pnp.*
+
+# env
+apps/server/**/.env*
+apps/server/**/.env.production
+!apps/server/**/.env.example
+apps/server/**/.dev.vars
+
+# logs
+apps/server/**/logs
+apps/server/**/*.log
+apps/server/**/npm-debug.log*
+apps/server/**/yarn-debug.log*
+apps/server/**/yarn-error.log*
+apps/server/**/pnpm-debug.log*
+apps/server/**/lerna-debug.log*
+
+# misc
+apps/server/**/.DS_Store
+apps/server/**/*.pem
+apps/server/**/dev
+
+# local db
+apps/server/**/*.db*
+
+# typescript
+apps/server/**/*.tsbuildinfo
+apps/server/**/next-env.d.ts
+
+apps/server/**/EMBEDDING_SETUP.md
+apps/server/**/ocrHelper.ts
+
+# flyctl launch added from apps/web/.gitignore
+# Dependencies
+apps/web/node_modules
+apps/web/.pnp
+apps/web/**/.pnp.*
+apps/web/**/.yarn/*
+!apps/web/**/.yarn/patches
+!apps/web/**/.yarn/plugins
+!apps/web/**/.yarn/releases
+!apps/web/**/.yarn/versions
+
+# Testing
+apps/web/coverage
+
+# Build outputs
+apps/web/.next
+apps/web/out
+apps/web/build
+apps/web/dist
+apps/web/**/.vinxi
+apps/web/**/.output
+apps/web/**/.react-router
+apps/web/**/.tanstack
+apps/web/**/.nitro
+
+# Deployment
+apps/web/**/.vercel
+apps/web/**/.netlify
+apps/web/**/.wrangler
+apps/web/**/.alchemy
+
+# Environment & local files
+apps/web/**/.env*
+!apps/web/**/.env.example
+apps/web/**/.DS_Store
+apps/web/**/*.pem
+apps/web/**/*.local
+
+# Logs
+apps/web/**/npm-debug.log*
+apps/web/**/yarn-debug.log*
+apps/web/**/yarn-error.log*
+apps/web/**/.pnpm-debug.log*
+apps/web/**/*.log*
+
+# TypeScript
+apps/web/**/*.tsbuildinfo
+apps/web/**/next-env.d.ts
+
+# IDE
+apps/web/**/.vscode/*
+!apps/web/**/.vscode/extensions.json
+apps/web/**/.idea
+
+# Other
+apps/web/**/dev-dist
+
+apps/web/**/.wrangler
+apps/web/**/.dev.vars*
+
+apps/web/**/.open-next
+
+# flyctl launch added from packages/db/.gitignore
+# dependencies (bun install)
+packages/db/**/node_modules
+
+# output
+packages/db/**/out
+packages/db/**/dist
+packages/db/**/*.tgz
+packages/db/prisma/generated
+
+# code coverage
+packages/db/**/coverage
+packages/db/**/*.lcov
+
+# logs
+packages/db/**/logs
+packages/db/**/_.log
+packages/db/**/report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# dotenv environment variable files
+packages/db/**/.env
+packages/db/**/.env.development.local
+packages/db/**/.env.test.local
+packages/db/**/.env.production.local
+packages/db/**/.env.local
+
+# caches
+packages/db/**/.eslintcache
+packages/db/**/.cache
+packages/db/**/*.tsbuildinfo
+
+# IntelliJ based IDEs
+packages/db/**/.idea
+
+# Finder (MacOS) folder config
+packages/db/**/.DS_Store
+fly.toml

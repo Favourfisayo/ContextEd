@@ -1,6 +1,6 @@
 import { parseApiError } from "@/lib/errors";
 import { type CourseCreateInput, type CourseDocCreateInput, type CourseUpdateInput } from "@studyrag/shared-schemas";
-const API_URL = process.env.NEXT_PUBLIC_SERVER_PROTECTED_URL;
+const API_URL = "/api/protected";
 
 export interface Course {
   id: string;

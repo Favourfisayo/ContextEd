@@ -12,7 +12,7 @@ const app = express();
 
 // If app is served through a proxy, trust the proxy to allow HTTPS protocol to be detected
 if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', true);
+  app.set('trust proxy', 1); // Trust the first proxy (Fly.io load balancer)
 }
 
 //Timeout handler

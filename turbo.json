@@ -1,6 +1,7 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
+	"globalEnv": ["DATABASE_URL", "NODE_ENV"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
@@ -45,6 +46,10 @@
 		"db:generate": {
 			"cache": false,
 			"persistent": true
+		},
+		"postinstall": {
+			"dependsOn": ["^postinstall"],
+			"outputs": []
 		}
 	}
 }
