@@ -20,7 +20,10 @@ export async function proxy(request: NextRequest) {
 	const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(route));
 
 	// Get session
-	const session = await getSession(`authjs.session-token=${request.cookies.get("authjs.session-token")?.value}`);
+	const sessionCookie = request.cookies.get("authjs.session-token") || request.cookies.get("__Secure-authjs.session-token");
+	const cookieHeader = sessionCookie ? `${sessionCookie.name}=${sessionCookie.value}` : undefined;
+	
+	const session = await getSession(cookieHeader, request.nextUrl.origin);
 	
 	// Redirect to sign-in if accessing protected route without session
 	if (isProtectedRoute && !session) {

@@ -10,6 +10,9 @@ import {rateLimit} from "express-rate-limit"
 
 const app = express();
 
+// Ensure Auth.js trusts the host header (critical for Vercel rewrites)
+process.env.AUTH_TRUST_HOST = "true";
+
 // If app is served through a proxy, trust the proxy to allow HTTPS protocol to be detected
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1); // Trust the first proxy (Fly.io load balancer)

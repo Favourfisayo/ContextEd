@@ -19,8 +19,9 @@ export interface Session {
 /**
  * Get the current session from the backend
  * @param cookieHeader - Optional cookie header for server-side contexts
+ * @param baseUrl - Optional base URL for server-side contexts (e.g. http://localhost:3000)
  */
-export async function getSession(cookieHeader?: string): Promise<Session | null> {
+export async function getSession(cookieHeader?: string, baseUrl: string = ""): Promise<Session | null> {
 	try {
 		const headers: HeadersInit = {
 			"Content-Type": "application/json",
@@ -30,7 +31,7 @@ export async function getSession(cookieHeader?: string): Promise<Session | null>
 			headers["Cookie"] = cookieHeader;
 		}
 
-		const response = await fetch(`${API_URL}/auth/session`, {
+		const response = await fetch(`${baseUrl}/auth/session`, {
 			method: "GET",
 			credentials: cookieHeader ? "omit" : "include",
 			headers,
