@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MessageSquare, Upload, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const TITLE_TEXT = `
 ██████╗  ██████╗ ███╗   ██╗████████╗███████╗██╗  ██╗████████╗       ███████╗██████╗ 
