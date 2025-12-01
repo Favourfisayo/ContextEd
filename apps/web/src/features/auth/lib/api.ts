@@ -71,17 +71,51 @@ export async function getCsrfToken(): Promise<string | null> {
 }
 
 /**
- * Sign in with Google OAuth # TODO: Replace approach with actual sending to auth endpoints on our express server
+ * Sign in with Google OAuth
+ * This triggers the Auth.js signin flow by submitting a form to the backend
  */
-export function signInWithGoogle() {
-	window.location.href = `${API_URL}/auth/signin`;
+export async function signInWithGoogle() {
+	// Create a form element
+	const form = document.createElement("form");
+	form.method = "POST";
+	form.action = `${API_URL}/auth/signin/google`; // Use the provider-specific endpoint
+
+	// Add CSRF token input
+	const csrfToken = await getCsrfToken();
+	if (csrfToken) {
+		const input = document.createElement("input");
+		input.type = "hidden";
+		input.name = "csrfToken";
+		input.value = csrfToken;
+		form.appendChild(input);
+	}
+	
+	document.body.appendChild(form);
+	form.submit();
 }
 
 /**
- * Sign out # TODO: Replace approach with actual sending to auth endpoints on our express server
+ * Sign out
  */
 export async function signOut() {
-	window.location.href = `${API_URL}/auth/signout`
+	const form = document.createElement("form");
+	form.method = "POST";
+	form.action = `${API_URL}/auth/signout`;
+	
+	// Fetch CSRF token first if needed, but for simple form post, 
+	// Auth.js often handles it via the cookie if present.
+	// Let's try the direct POST first as per docs.
+	const csrfToken = await getCsrfToken();
+	if (csrfToken) {
+		const input = document.createElement("input");
+		input.type = "hidden";
+		input.name = "csrfToken";
+		input.value = csrfToken;
+		form.appendChild(input);
+	}
+
+	document.body.appendChild(form);
+	form.submit();
 }
 
 /**

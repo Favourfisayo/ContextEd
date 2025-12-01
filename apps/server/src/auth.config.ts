@@ -7,6 +7,7 @@ const FRONTEND_URL = process.env.CORS_ORIGIN;
 const isProduction = process.env.NODE_ENV === "production";
 
 export const authConfig: ExpressAuthConfig = {
+	basePath: "/auth",
 	adapter: PrismaAdapter(prisma),
 	providers: [Google],
 	trustHost: true,

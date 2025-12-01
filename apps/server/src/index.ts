@@ -15,7 +15,7 @@ process.env.AUTH_TRUST_HOST = "true";
 
 // If app is served through a proxy, trust the proxy to allow HTTPS protocol to be detected
 if (process.env.NODE_ENV === 'production') {
-  app.set('trust proxy', 1); // Trust the first proxy (Fly.io load balancer)
+  app.set('trust proxy', true); // Trust all proxies (Fly.io + others)
 }
 
 //Timeout handler
