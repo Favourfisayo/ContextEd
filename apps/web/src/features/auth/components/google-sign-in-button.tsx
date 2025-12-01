@@ -2,20 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { signInWithGoogle } from "../lib/api";
-import { useState } from "react";
-import { toast } from "sonner";
-
 export function GoogleSignInButton() {
-	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSignIn = async () => {
-		setIsLoading(true);
-		try {
-			await signInWithGoogle();
-		} catch (error) {
-			toast.error(`SignIn failed: ${error}`)
-			setIsLoading(false);
-		}
+	const handleSignIn = () => {
+			signInWithGoogle();
 	};
 
 	return (
@@ -23,7 +13,6 @@ export function GoogleSignInButton() {
 			variant="outline"
 			className="h-12 cursor-pointer w-full border-2 border-gray-300 bg-gray-100 hover:bg-gray-200"
 			onClick={handleSignIn}
-			disabled={isLoading}
 		>
 			<svg
 				className="mr-2 h-4 w-4"

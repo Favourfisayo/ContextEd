@@ -11,7 +11,6 @@ export function SignOutButton() {
 		<Button
 			variant="outline"
 			onClick={() => signOut()}
-			disabled={isPending}
 			className="w-full"
 		>
 			{isPending ? (

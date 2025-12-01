@@ -69,7 +69,7 @@ export async function getCsrfToken(): Promise<string | null> {
 /**
  * Sign in with Google OAuth # TODO: Replace approach with actual sending to auth endpoints on our express server
  */
-export async function signInWithGoogle() {
+export function signInWithGoogle() {
 	window.location.href = `${API_URL}/auth/signin`;
 }
 
