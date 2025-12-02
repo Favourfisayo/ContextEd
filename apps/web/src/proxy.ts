@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
 	const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(route));
 
 	// Get session
-	const sessionCookie = request.cookies.get("authjs.session-token") || request.cookies.get("__Secure-authjs.session-token");
+	const sessionCookie = request.cookies.get("better-auth.session_token") || request.cookies.get("__Secure-better-auth.session_token");
 	const cookieHeader = sessionCookie ? `${sessionCookie.name}=${sessionCookie.value}` : undefined;
 	
 	const session = await getSession(cookieHeader, request.nextUrl.origin);

@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { User } from "../lib/api";
+import { type Session } from "@/lib/auth-client";
 
 interface UserAvatarProps {
-    user: User,
+    user: Session["user"],
     fallbackImage: string | undefined
 }
 

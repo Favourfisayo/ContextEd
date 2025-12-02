@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { getSession } from "@auth/express";
-import { authConfig } from "../../../auth.config";
+import { getSession } from "../lib/session";
 import { UnauthorizedError } from "@/lib/errors";
 
 /**
@@ -13,7 +12,7 @@ export async function requireAuth(
 	next: NextFunction,
 ) {
 	const session =
-		res.locals.session ?? (await getSession(req, authConfig));
+		res.locals.session ?? (await getSession(req));
 
 	if (!session?.user) {
 		throw new UnauthorizedError("You must be signed in to access this resource");

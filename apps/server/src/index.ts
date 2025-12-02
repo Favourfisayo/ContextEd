@@ -1,17 +1,15 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import { authHandler } from "./auth";
-import { authSession } from "./features/auth/middleware/authSession";
+import { auth } from "./auth";
+import { toNodeHandler } from "better-auth/node";
 import protectedRoutes from "./routes/protected.routes";
 import { errorHandler, notFoundHandler } from "./lib/errors";
 import timeout from "connect-timeout"
 import {rateLimit} from "express-rate-limit"
+import { getSession } from "./features/auth/lib/session";
 
 const app = express();
-
-// Ensure Auth.js trusts the host header (critical for Vercel rewrites)
-process.env.AUTH_TRUST_HOST = "true";
 
 // If app is served through a proxy, trust the proxy to allow HTTPS protocol to be detected
 if (process.env.NODE_ENV === 'production') {
@@ -39,26 +37,25 @@ const limiter = rateLimit({
 app.use(limiter) //Apply rate limiter globally
 app.use(
 	cors({
-		origin: process.env.CORS_ORIGIN || "",
+		origin: process.env.CORS_ORIGIN,
 		methods: ["GET", "POST", "OPTIONS", "PATCH", "DELETE"],
 		credentials: true,
 	}),
 ); 
 
+
+
+// Better Auth handler
+app.all("/api/auth/*splat", toNodeHandler(auth));
+
 app.use(express.json());
-
-// Auth.js routes - handles signin, callback, signout, session, and so on..
-app.use("/auth", authHandler);
-
-// Apply session middleware to all other routes
-app.use(authSession);
 
 app.get("/", (_req, res) => {
 	res.status(200).send("OK");
 });
 
-app.get("/api/me", (_req, res) => {
-	const { session } = res.locals;
+app.get("/api/me", async (req, res) => {
+	const session  = await getSession(req);
 	res.json({ user: session?.user || null });
 });
 
@@ -88,7 +85,7 @@ process.on("uncaughtException", (error: Error) => {
 	process.exit(1);
 });
 
-const port = process.env.PORT;
-app.listen(port, () => {
+const port = Number(process.env.PORT);
+app.listen(port, "0.0.0.0", () => {
 	console.log(`Server is running on port ${port}`);
 });
