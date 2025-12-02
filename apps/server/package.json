@@ -12,7 +12,7 @@
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
-    "worker": "tsx src/features/courses/workers/embeddingWorker.ts",
+    "worker": "node dist/embeddingWorker.js",
     "worker:dev": "tsx watch src/features/courses/workers/embeddingWorker.ts"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "@langchain/textsplitters": "^1.0.0",
     "@studyRAG/db": "workspace:*",
     "@studyrag/shared-schemas": "workspace:*",
+    "better-auth": "^1.4.4",
     "bullmq": "^5.64.1",
     "chromadb": "^3.1.5",
     "cors": "^2.8.5",
@@ -38,6 +39,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10",
     "@studyrag/eslint-config": "workspace:*",
     "@types/connect-timeout": "^1.9.0",
     "@types/cors": "^2.8.17",

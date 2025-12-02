@@ -22,14 +22,12 @@ import {
 import { useSession } from "../lib/queries"
 import { useSignOut } from "../lib/mutations"
 import UserAvatar from "./user-avatar"
-
 export function NavUser() {
   const { isMobile } = useSidebar()
 
   const {data: session} = useSession()
 
-  const signOut = useSignOut()
-
+  const {mutate: signOut } = useSignOut()
   if (!session?.user) {
     return null
   }
@@ -70,7 +68,7 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut.mutateAsync()}>
+            <DropdownMenuItem onClick={() => signOut()}>
               <LogOut />
               Log out
             </DropdownMenuItem>

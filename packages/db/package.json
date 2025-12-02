@@ -15,23 +15,26 @@
     "build": "tsdown",
     "lint": "eslint . --ext .ts,.tsx",
     "check-types": "tsc -b",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate --schema=./prisma/schema/schema.prisma",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset"
   },
   "devDependencies": {
-    "prisma": "^7.0.1",
-    "tsdown": "catalog:",
     "@studyrag/eslint-config": "workspace:*",
-    "eslint": "^9.39.1"
+    "eslint": "^9.39.1",
+    "prisma": "^7.0.1",
+    "tsdown": "catalog:"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@better-auth/cli": "^1.4.4",
     "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/adapter-ppg": "^7.0.1",
     "@prisma/client": "catalog:",
     "@prisma/client-runtime-utils": "7.0.1",
     "@prisma/extension-accelerate": "^2.0.2",

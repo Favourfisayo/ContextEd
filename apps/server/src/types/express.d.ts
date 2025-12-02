@@ -1,9 +1,8 @@
-import type { Session } from "@auth/express";
-
+import { auth } from "@/auth";
 declare global {
 	namespace Express {
 		interface Locals {
-			session?: Session | null;
+			session?: typeof auth.$Infer.Session;
 		}
 	}
 }

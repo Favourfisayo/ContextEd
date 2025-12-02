@@ -1,18 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { signInWithGoogle } from "../lib/api";
+import { useSignIn } from "../lib/mutations";
+
 export function GoogleSignInButton() {
 
-	const handleSignIn = () => {
-			signInWithGoogle();
-	};
-
+	const { mutate: signIn, isPending } = useSignIn()
 	return (
 		<Button
 			variant="outline"
 			className="h-12 cursor-pointer w-full border-2 border-gray-300 bg-gray-100 hover:bg-gray-200"
-			onClick={handleSignIn}
+			onClick={() => signIn()}
+			disabled={isPending}
 		>
 			<svg
 				className="mr-2 h-4 w-4"
