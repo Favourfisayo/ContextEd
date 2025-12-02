@@ -23,7 +23,7 @@ export async function proxy(request: NextRequest) {
 	const sessionCookie = request.cookies.get("better-auth.session_token") || request.cookies.get("__Secure-better-auth.session_token");
 	const cookieHeader = sessionCookie ? `${sessionCookie.name}=${sessionCookie.value}` : undefined;
 	
-	const session = await getSession(cookieHeader, request.nextUrl.origin);
+	const session = await getSession(cookieHeader);
 	
 	// Redirect to sign-in if accessing protected route without session
 	if (isProtectedRoute && !session) {

@@ -3,7 +3,7 @@ import { toast } from "sonner";
 /**
  * Get the current session from the backend
  */
-export async function getSession(cookieHeader?: string, baseUrl: string = ""): Promise<Session | null> {
+export async function getSession(cookieHeader?: string): Promise<Session | null> {
 	try {
 		const { data: session } = await authClient.getSession({
 			fetchOptions: {

@@ -22,8 +22,6 @@ import {
 import { useSession } from "../lib/queries"
 import { useSignOut } from "../lib/mutations"
 import UserAvatar from "./user-avatar"
-import { useRouter } from "next/navigation"
-
 export function NavUser() {
   const { isMobile } = useSidebar()
 

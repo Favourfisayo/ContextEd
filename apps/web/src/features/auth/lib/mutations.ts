@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signInWithGoogle, signOut } from "./api";
-import { toast } from "sonner";
+
 /**
  * React Query mutation hook for signing out
  */
