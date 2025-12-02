@@ -1,5 +1,5 @@
 import prisma from "@studyRAG/db";
-import { type Session } from "@auth/express";
+import { type Session } from "@/features/auth/lib/session";
 import type { Request } from "express";
 import { courseCreateSchema, courseUpdateSchema, courseDocCreateSchema } from "@studyrag/shared-schemas";
 import { embeddingQueue } from "../queue/embeddingQueue";

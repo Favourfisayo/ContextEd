@@ -7,3 +7,4 @@ export async function getSession(req: Request) {
     })
     return session
 }
+export type Session = typeof auth.$Infer.Session

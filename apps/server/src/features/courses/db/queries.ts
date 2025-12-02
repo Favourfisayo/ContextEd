@@ -1,5 +1,5 @@
 import prisma from "@studyRAG/db";
-import { type Session } from "@auth/express";
+import { type Session } from "@/features/auth/lib/session";
 import { embeddingQueue } from "../queue/embeddingQueue";
 import { type EmbeddingJobStatus } from "@studyrag/shared-schemas";
 import { UnauthorizedError, NotFoundError, AppError } from "@/lib/errors";
