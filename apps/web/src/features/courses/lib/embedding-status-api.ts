@@ -1,5 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-
+const API_URL = process.env.NEXT_PUBLIC_SERVER_PROTECTED_URL;
 import { type EmbeddingJobStatus } from "@studyrag/shared-schemas";
 import type { QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
