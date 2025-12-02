@@ -15,16 +15,21 @@ async function getServerSession(cookieHeader: string | undefined) {
   try {
     const res = await fetch(`${API_URL}/api/me`, {
       method: "GET",
-      headers: cookieHeader ? { Cookie: cookieHeader } : {},
-      credentials: "include",
+      headers: {
+        ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      return null;
+    }
 
     const data = await res.json();
     return data?.user ? { user: data.user } : null;
   } catch (error) {
-    console.error("Failed to fetch session from backend:", error);
+    console.error(`[Uploadthing Error] Server side session fetch failed: ${error}`)
     return null;
   }
 }
@@ -56,11 +61,13 @@ export const ourFileRouter = {
       const cookieHeader = allCookies
         .map((c) => `${c.name}=${c.value}`)
         .join("; ");
-
+      
       const session = await getServerSession(cookieHeader);
 
       // If you throw, the user will not be able to upload
-      if (!session?.user) throw new UploadThingError("Unauthorized");
+      if (!session?.user) {
+        throw new UploadThingError("Unauthorized");
+      }
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: session.user.id };

@@ -1,20 +1,41 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
-/**
- * Next.js 16 Proxy (middleware)
- * 
- * IMPORTANT: With a cross-origin auth setup (frontend on Vercel, backend on Fly.io),
- * session cookies are set on the backend domain and NOT accessible in middleware
- * when the request comes to the frontend domain.
- * 
- * The actual auth protection happens in pages/components via the useSession() hook,
- * which makes a client-side request to the backend where cookies ARE available.
- * 
- * This proxy handles minimal routing logic that doesn't require auth state.
- */
-export async function proxy() {
-	// For cross-origin setups, we let requests through and handle auth
-	// in the actual pages/components using useSession() hook
+// Define which routes require authentication
+const protectedRoutes = ["/dashboard"];
+
+// Define public routes that should redirect to dashboard if authenticated
+const authRoutes = ["/auth/sign-in"];
+
+export async function proxy(request: NextRequest) {
+	const { pathname } = request.nextUrl;
+
+	if (pathname === "/") {
+		return NextResponse.next();
+	}
+
+	// Check if route requires protection
+	const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+	const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(route));
+
+	// Optimistic cookie check - verify session cookie exists
+	// Since we are on subdomains (api.context-ed.app and context-ed.app) with a shared root domain cookie,
+	// the middleware CAN see the session cookie.
+	const sessionCookie = getSessionCookie(request);
+	
+	// Redirect to sign-in if accessing protected route without session cookie
+	if (isProtectedRoute && !sessionCookie) {
+		const signInUrl = new URL("/auth/sign-in", request.url);
+		signInUrl.searchParams.set("callbackUrl", pathname);
+		return NextResponse.redirect(signInUrl);
+	}
+
+	// Redirect to dashboard if accessing auth routes with session cookie
+	if (isAuthRoute && sessionCookie) {
+		return NextResponse.redirect(new URL("/dashboard/courses", request.url));
+	}
+
 	return NextResponse.next();
 }
 

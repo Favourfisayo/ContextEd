@@ -27,6 +27,7 @@ export default [
       "**/.turbo/**",
       "**/*.test.ts",
       "**/*.config.js",
+      "**/*coverage/**",
       "postcss.config.mjs",
       "**/ui/**"
     ],
