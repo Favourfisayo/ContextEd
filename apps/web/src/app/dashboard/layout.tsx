@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import Loader from "@/components/loader";
 
 export default function DashboardPageLayout({children}: {children:React.ReactNode}) {
-    const { data: session, isLoading, isError } = useSession();
+    const { data: session, isLoading } = useSession();
     const router = useRouter();
 
     useEffect(() => {
