@@ -14,9 +14,22 @@ export const auth = betterAuth({
 		},
 	},
 	advanced: {
-		useSecureCookies: true, // Force Secure in production
+		useSecureCookies: true,
+		defaultCookieAttributes: {
+			secure: true,
+			sameSite: "none",
+			httpOnly: true,
+			domain: undefined
+		},
 		cookies: {
 			session_token: {
+				attributes: {
+					sameSite: "none",
+					secure: true,
+				}
+			},
+			// The STATE cookie is what causes state_mismatch - must be explicitly configured
+			state: {
 				attributes: {
 					sameSite: "none",
 					secure: true,
