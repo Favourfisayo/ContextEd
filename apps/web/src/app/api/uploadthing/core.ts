@@ -1,15 +1,38 @@
-import { getSession } from "@/features/auth/lib/api";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { cookies } from "next/headers";
 
 const f = createUploadthing();
 
+// Server-side session fetch — directly call the Express backend
+async function getServerSession(cookieHeader: string | undefined) {
+  const API_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+  if (!API_URL) {
+    console.error("NEXT_PUBLIC_SERVER_URL is not set");
+    return null;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/api/me`, {
+      method: "GET",
+      headers: cookieHeader ? { Cookie: cookieHeader } : {},
+      credentials: "include",
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data?.user ? { user: data.user } : null;
+  } catch (error) {
+    console.error("Failed to fetch session from backend:", error);
+    return null;
+  }
+}
+
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   courseDocumentUploader: f({
-    
     pdf: {
       maxFileSize: "16MB",
       maxFileCount: 5,
@@ -27,15 +50,15 @@ export const ourFileRouter = {
     .middleware(async () => {
       // This code runs on your server before upload
       const cookieStore = await cookies();
-      const sessionCookie = cookieStore.get("authjs.session-token");
-      
-      const cookieHeader = sessionCookie 
-        ? `authjs.session-token=${sessionCookie.value}`
-        : undefined;
-      
-      const session = await getSession(cookieHeader);
 
-      
+      // Forward all auth-related cookies to the backend
+      const allCookies = cookieStore.getAll();
+      const cookieHeader = allCookies
+        .map((c) => `${c.name}=${c.value}`)
+        .join("; ");
+
+      const session = await getServerSession(cookieHeader);
+
       // If you throw, the user will not be able to upload
       if (!session?.user) throw new UploadThingError("Unauthorized");
 
