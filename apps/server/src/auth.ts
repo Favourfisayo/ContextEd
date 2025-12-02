@@ -15,27 +15,15 @@ export const auth = betterAuth({
 	},
 	advanced: {
 		useSecureCookies: true,
+		crossSubDomainCookies: {
+			enabled: true,
+			domain: process.env.NODE_ENV === "production" ? "context-ed.app" : undefined,
+		},
 		defaultCookieAttributes: {
 			secure: true,
-			sameSite: "none",
+			sameSite: "lax",
 			httpOnly: true,
-			domain: undefined
 		},
-		cookies: {
-			session_token: {
-				attributes: {
-					sameSite: "none",
-					secure: true,
-				}
-			},
-			// The STATE cookie is what causes state_mismatch - must be explicitly configured
-			state: {
-				attributes: {
-					sameSite: "none",
-					secure: true,
-				}
-			}
-		}
 	},
 	trustedOrigins: [process.env.CORS_ORIGIN!],
 });
