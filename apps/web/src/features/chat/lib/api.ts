@@ -2,7 +2,7 @@ import type { ChatMessage, SendMessageInput, ChatMode } from "@studyrag/shared-s
 import {  parseApiError } from "@/lib/errors";
 import { toast } from "sonner";
 
-const API_URL = "/api/protected";
+const API_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export interface ChatHistoryResponse {
   messages: ChatMessage[];
