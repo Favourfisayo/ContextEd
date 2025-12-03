@@ -16,6 +16,10 @@ vi.mock("@studyRAG/db", () => ({
   default: { courseDoc: { update: vi.fn() } },
 }));
 
+vi.mock("../embeddingEvents", () => ({
+  emitEmbeddingUpdate: vi.fn(),
+}));
+
 // Import module under test and mock-typed references AFTER we declared mocks
 import { buildEmbeddingsForDocument, querySimilarDocuments } from "../embeddingService";
 import { loadAndSplitDocument } from "../documentLoader";
@@ -47,7 +51,7 @@ describe("buildEmbeddingsForDocument", () => {
     await buildEmbeddingsForDocument("courseA", "https://example/file.pdf", "doc-1");
 
     // Assert
-    expect(loadAndSplitDocument).toHaveBeenCalledWith("https://example/file.pdf");
+    expect(loadAndSplitDocument).toHaveBeenCalledWith("https://example/file.pdf", expect.any(Function));
     expect(embedDocuments).toHaveBeenCalledWith(["Text A", "Text B"]);
     expect(addMock).toHaveBeenCalledWith(
       expect.objectContaining({

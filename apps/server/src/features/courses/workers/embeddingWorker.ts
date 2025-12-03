@@ -1,10 +1,11 @@
 import "dotenv/config";
-import { Worker } from "bullmq";
+import { Worker, Job } from "bullmq";
 import { redisConnection } from "@/lib/redis";
 import { buildEmbeddingsForDocument } from "../lib/embeddingService";
 import prisma from "@studyRAG/db";
 import { emitEmbeddingUpdate } from "../lib/embeddingEvents";
 import { NotFoundError } from "@/lib/errors";
+import { embeddingQueue } from "../queue/embeddingQueue";
 
 export const embeddingWorker = new Worker(
   "embeddingQueue",
@@ -26,7 +27,9 @@ export const embeddingWorker = new Worker(
       }
 
       // Build embeddings for the document
-      await buildEmbeddingsForDocument(courseId, fileUrl, courseDoc.id);
+      await buildEmbeddingsForDocument(courseId, fileUrl, courseDoc.id, async (progress) => {
+        await job.updateProgress(progress);
+      });
 
       return { 
         status: "completed", 
@@ -56,7 +59,8 @@ export const embeddingWorker = new Worker(
   },
   {
     connection: redisConnection,
-    concurrency: 5, // Process up to 5 jobs concurrently
+    concurrency: 1, // Process 1 job at a time to avoid CPU starvation during OCR
+    lockDuration: 300000, // 5 minutes lock duration for long running OCR jobs
     limiter: {
       max: 10, // Max 10 jobs
       duration: 1000, // per 1 second
@@ -111,8 +115,19 @@ embeddingWorker.on("error", (err) => {
   console.error("Worker error:", err);
 });
 
-embeddingWorker.on("stalled", (jobId) => {
-  console.warn(`Job ${jobId} has stalled`);
+embeddingWorker.on("stalled", async (jobId) => {
+  try {
+    const job = await Job.fromId(embeddingQueue, jobId);
+    if (job && job.data.courseId && job.data.docId) {
+      // Notify frontend that job has stalled
+      emitEmbeddingUpdate({
+        courseId: job.data.courseId,
+        docId: job.data.docId,
+        status: "failed",
+        error: "Job stalled. Retrying...",
+      });
+    }
+  } catch (_err) {}
 });
 
 // Graceful shutdown

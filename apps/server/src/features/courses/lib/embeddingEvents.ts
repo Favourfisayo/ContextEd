@@ -5,7 +5,9 @@ export interface EmbeddingJobUpdate {
   courseId: string;
   docId: string;
   status: "waiting" | "active" | "completed" | "failed";
+  stage?: "ocr" | "embedding";
   error?: string;
+  progress?: number;
 }
 
 /**
@@ -16,7 +18,7 @@ export async function emitEmbeddingUpdate(update: EmbeddingJobUpdate) {
   const channel = `course:${update.courseId}:embeddings`;
   const message = JSON.stringify(update);
   
-  await redis_client.publish(channel, message); // e are using Redis to send events between the main server and the worker because they are separate processes.
+  await redis_client.publish(channel, message); // we are using Redis to send events between the main server and the worker because they are separate processes.
 }
 
 /**

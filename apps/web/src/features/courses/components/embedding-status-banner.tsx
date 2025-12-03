@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import Loader from "@/components/loader";
 import { cn } from "@/lib/utils";
 
+import { Progress } from "@/components/ui/progress";
+
 interface EmbeddingStatusBannerProps {
   courseId: string;
 }
@@ -117,32 +119,40 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
   const failedDocs = data.documents.filter((doc) => doc.embeddingStatus === "FAILED" || doc.status === "failed");
 
   return (
-    <div className="border-b bg-muted/50 px-6 py-3 mt-4">
+    <div className="border-b bg-muted/50 px-4 sm:px-6 py-3">
       {/* Processing State */}
       {pendingDocs.length > 0 && (
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <Loader text="Processing course documents..." />
-            <p className="text-xs text-muted-foreground">
-              {pendingDocs.length} of {data.documents.length} documents being embedded. This may take a few moments.
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <Loader text={
+                pendingDocs[0]?.stage === "ocr" 
+                  ? "Extracting text (OCR)..." 
+                  : "Embedding content..."
+              } />
+            </div>
+            <p className="text-xs text-muted-foreground truncate">
+              {pendingDocs.length} of {data.documents.length} documents being processed. <b>(Start chatting with Jules while embedding is in process 👍)</b>
             </p>
           </div>
-          <CheckCircle2 className="h-5 w-5 text-muted-foreground" />
+          <CheckCircle2 className="hidden sm:block h-5 w-5 text-muted-foreground shrink-0" />
         </div>
       )}
 
       {/* Failed State */}
       {failedDocs.length > 0 && pendingDocs.length === 0 && (
-        <div className="flex items-center gap-3">
-          <AlertCircle className="h-5 w-5 text-destructive" />
-          <div className="flex-1">
-            <p className="text-sm font-medium text-destructive">Embedding failed for {failedDocs.length} document(s)</p>
-            <p className="text-xs text-muted-foreground">
-              {failedDocs[0].error || "An error occurred during processing"}
-            </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+            <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5 sm:mt-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-destructive truncate">Embedding failed for {failedDocs.length} document(s)</p>
+              <p className="text-xs text-muted-foreground truncate">
+                {failedDocs[0].error || "An error occurred during processing"}
+              </p>
+            </div>
           </div>
 
-          <Button size="sm" variant="outline" onClick={handleRetryAll} disabled={isRetrying}>
+          <Button size="sm" variant="outline" onClick={handleRetryAll} disabled={isRetrying} className="w-full sm:w-auto ml-8 sm:ml-0">
             <RefreshCw
               className={cn("mr-2 h-4 w-4", isRetrying && "animate-spin")}
             />
@@ -153,16 +163,24 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
 
       {/* Processing Details (Expandable) */}
       {pendingDocs.length > 0 && (
-        <div className="mt-2 space-y-1">
+        <div className="mt-3 space-y-2">
           {pendingDocs.slice(0, 3).map((doc) => (
-            <div key={doc.docId} className="flex items-center gap-2 text-xs text-muted-foreground">
-              <div className="h-1 w-1 rounded-full bg-primary animate-pulse" />
-              <span className="truncate max-w-md">{doc.fileUrl.split("/").pop()}</span>
-              {doc.status === "active" && <span className="text-primary font-medium">Processing...</span>}
-              {doc.status === "waiting" && <span className="text-muted-foreground">Waiting...</span>}
+            <div key={doc.docId} className="space-y-1">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                  <span className="truncate">{doc.fileUrl.split("/").pop()}</span>
+                </div>
+                <span className="text-xs font-medium ml-2 shrink-0">
+                  {doc.status === "active" ? `${doc.progress || 0}%` : "Waiting..."}
+                </span>
+              </div>
+              {doc.status === "active" && (
+                <Progress value={doc.progress || 0} className="h-1" />
+              )}
             </div>
           ))}
-          {pendingDocs.length > 3 && <p className="text-xs text-muted-foreground pl-3">+{pendingDocs.length - 3} more</p>}
+          {pendingDocs.length > 3 && <p className="text-xs text-muted-foreground pl-3.5">+{pendingDocs.length - 3} more</p>}
         </div>
       )}
     </div>

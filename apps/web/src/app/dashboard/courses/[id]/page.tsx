@@ -37,18 +37,27 @@ export default function ChatPage({ params }: ChatPageProps) {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <ChatHeader courseId={courseId} courseTitle={courseData?.course_title} />
-      <EmbeddingStatusBanner courseId={courseId} />
-      <ChatMessages
-        messages={messages}
-        isLoading={isLoading}
-        isAssistantTyping={isAssistantTyping}
-      />
-      <ChatInput
-        onSend={handleSendMessage}
-        isSending={isSending}
-      />
+      
+      <div className="flex-none">
+        <EmbeddingStatusBanner courseId={courseId} />
+      </div>
+      
+      <div className="flex-1 min-h-0 relative flex flex-col">
+        <ChatMessages
+          messages={messages}
+          isLoading={isLoading}
+          isAssistantTyping={isAssistantTyping}
+        />
+      </div>
+      
+      <div className="flex-none p-4 pt-2">
+        <ChatInput
+          onSend={handleSendMessage}
+          isSending={isSending}
+        />
+      </div>
     </div>
   );
 }
