@@ -2,7 +2,8 @@
 
 import { FileText, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { UploadDropzone } from "@/features/courses/utils/uploadthing";
+import { UploadDropzone, UploadButton } from "@/features/courses/utils/uploadthing";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useCreateCourseDocuments } from "@/features/courses/lib/mutations";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,7 @@ interface UploadedFile {
 
 export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps) {
 	const router = useRouter();
+	const isMobile = useIsMobile();
 	const createDocumentsMutation = useCreateCourseDocuments();
 	const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>(
 		[]
@@ -34,6 +36,24 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 
 	const handleFileRemove = (fileUrl: string) => {
 		setUploadedFiles((files) => files.filter((f) => f.url !== fileUrl));
+	};
+
+	const handleUploadComplete = (res: any) => {
+		if (res) {
+			const newFiles = res.map((file: any) => ({
+				url: file.ufsUrl,
+				name: file.name,
+				size: file.size,
+				type: file.type,
+				key: file.key,
+			}));
+			setUploadedFiles((prev) => [...prev, ...newFiles]);
+			toast.success("Files uploaded successfully!");
+		}
+	};
+
+	const handleUploadError = (error: Error) => {
+		toast.error(`Upload failed: ${getErrorMessage(error)}`);
 	};
 
 
@@ -84,35 +104,39 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 			{/* Upload Zone */}
 			<div className="space-y-4">
 				{canUploadMore && (
-					<UploadDropzone
-						endpoint="courseDocumentUploader"
-						onClientUploadComplete={(res) => {
-							if (res) {
-								const newFiles = res.map((file) => ({
-									url: file.ufsUrl,
-									name: file.name,
-									size: file.size,
-									type: file.type,
-									key: file.key,
-								}));
-								setUploadedFiles((prev) => [...prev, ...newFiles]);
-								toast.success("Files uploaded successfully!");
-							}
-						}}
-						onUploadError={(error: Error) => {
-							toast.error(`Upload failed: ${getErrorMessage(error)}`);
-						}}
-						config={{
-							mode: "auto",
-						}}
-						appearance={{
-							container: "border-none",
-							uploadIcon: "text-blue-500 hover:opacity-50 cursor-pointer",
-							label: "text-gray-600",
-							allowedContent: "text-gray-500",
-							button: "cursor-pointer hover:opacity-50"
-						}}
-					/>
+					isMobile ? (
+						<UploadButton
+							endpoint="courseDocumentUploader"
+							onClientUploadComplete={handleUploadComplete}
+							onUploadError={handleUploadError}
+							appearance={{
+								button: "w-full bg-blue-600 text-white hover:bg-blue-700 h-12 rounded-lg text-base font-medium transition-colors",
+								allowedContent: "hidden"
+							}}
+							content={{
+								button: "Select Documents"
+							}}
+							config={{
+								mode: "auto"
+							}}
+						/>
+					) : (
+						<UploadDropzone
+							endpoint="courseDocumentUploader"
+							onClientUploadComplete={handleUploadComplete}
+							onUploadError={handleUploadError}
+							config={{
+								mode: "auto",
+							}}
+							appearance={{
+								container: "border-none",
+								uploadIcon: "text-blue-500 hover:opacity-50 cursor-pointer",
+								label: "text-gray-600",
+								allowedContent: "text-gray-500",
+								button: "cursor-pointer hover:opacity-50"
+							}}
+						/>
+					)
 				)}
 
 				{!canUploadMore && (
@@ -151,7 +175,9 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 										</span>
 									</div>
 								</div>
-								
+								{/**
+								 * TODO: Actually remove file from uploadthing server and database.
+								 */}
 								<button
 									type="button"
 									onClick={() => handleFileRemove(file.url)}

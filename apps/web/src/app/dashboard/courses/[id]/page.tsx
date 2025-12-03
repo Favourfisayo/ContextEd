@@ -37,7 +37,7 @@ export default function ChatPage({ params }: ChatPageProps) {
   };
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-background">
+    <div className="flex h-dvh  flex-col overflow-hidden bg-background">
       <ChatHeader courseId={courseId} courseTitle={courseData?.course_title} />
       
       <div className="flex-none">

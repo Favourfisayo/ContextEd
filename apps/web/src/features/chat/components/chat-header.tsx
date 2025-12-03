@@ -42,24 +42,25 @@ export function ChatHeader({
 
 	const isMobile = useIsMobile()
 	return (
-		<div className={cn("flex h-16 items-center sticky justify-between border-b px-4", isMobile && "flex-col ")}>
+		<div className={cn("flex h-16 items-center sticky top-0  justify-between border-b px-4", isMobile && "h-auto py-2 flex-col gap-2")}>
 			{/* Course Title */}
-			<h1 className="text-base font-semibold text-gray-800">
+			<h1 className="text-base font-semibold text-gray-800 truncate w-full text-center sm:text-left">
 				{courseTitle}
 			</h1>
 
 			{/* Mode Toggle Buttons */}
-			<div className="flex gap-2 items-center">
+			<div className="flex gap-2 items-center w-full sm:w-auto justify-center sm:justify-end">
 				<UploadDocumentsButton courseId={courseId}/>
 				<Button
 					variant="outline"
 					size="sm"
 					onClick={() => handleModeChange("academic")}
-					className={
+					className={cn(
+						"flex-1 sm:flex-none",
 						activeMode === "academic"
 							? "border-2 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
 							: "border-2 border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200"
-					}
+					)}
 				>
 					Academic 👨‍🏫
 				</Button>
@@ -67,11 +68,12 @@ export function ChatHeader({
 					variant="outline"
 					size="sm"
 					onClick={() => handleModeChange("casual")}
-					className={
+					className={cn(
+						"flex-1 sm:flex-none",
 						activeMode === "casual"
 							? "border-2 border-blue-300 bg-blue-100 text-blue-700 hover:bg-blue-200"
 							: "border-2 border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200"
-					}
+					)}
 				>
 					Casual 🚀
 				</Button>

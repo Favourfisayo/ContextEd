@@ -70,7 +70,11 @@ export function ChatMessages({
 					
 					{/* Show typing indicator when assistant is thinking and no streaming yet */}
 					{isAssistantTyping && (
-						<Loader className="pt-20" text="Thinking..."/>
+						<div className="flex justify-start w-full mb-4">
+							<div className="rounded-2xl px-4 py-3">
+								<Loader text="Thinking..."/>
+							</div>
+						</div>
 					)}
 					
 					<div ref={messagesEndRef} />

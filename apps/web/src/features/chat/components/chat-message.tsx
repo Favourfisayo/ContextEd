@@ -20,17 +20,19 @@ export default function ChatMessage({
   return (
     <div
       className={cn(
-        "mb-6 flex gap-3 items-start",
-        isUser ? "justify-end w-[60%] float-right" : "justify-start w-full",
+        "mb-4 flex w-full",
+        isUser ? "justify-end" : "justify-start w-full",
         isPending && "opacity-70"
       )}
     >
       <div
         className={cn(
           "rounded-2xl px-4 py-3 whitespace-pre-wrap leading-relaxed",
-          "prose prose-sm max-w-none",
+          "prose prose-sm max-w-none wrap-break-word",
           "prose-p:my-1 prose-code:px-1 prose-code:py-0.5 prose-code:bg-muted/50 prose-code:rounded",
-          isUser && "bg-gray-500 text-white prose-invert"
+          isUser 
+            ? "bg-gray-500 text-white prose-invert " 
+            : "text-foreground"
         )}
       >
         <Markdown

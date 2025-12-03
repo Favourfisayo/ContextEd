@@ -131,7 +131,7 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
                   : "Embedding content..."
               } />
             </div>
-            <p className="text-xs text-muted-foreground truncate">
+            <p className="text-xs text-muted-foreground">
               {pendingDocs.length} of {data.documents.length} documents being processed. <b>(Start chatting with Jules while embedding is in process 👍)</b>
             </p>
           </div>
@@ -152,7 +152,7 @@ export function EmbeddingStatusBanner({ courseId }: EmbeddingStatusBannerProps) 
             </div>
           </div>
 
-          <Button size="sm" variant="outline" onClick={handleRetryAll} disabled={isRetrying} className="w-full sm:w-auto ml-8 sm:ml-0">
+          <Button size="sm" variant="outline" onClick={handleRetryAll} disabled={isRetrying} className="w-full sm:w-auto mt-2 sm:mt-0">
             <RefreshCw
               className={cn("mr-2 h-4 w-4", isRetrying && "animate-spin")}
             />
