@@ -28,8 +28,7 @@ async function getServerSession(cookieHeader: string | undefined) {
 
     const data = await res.json();
     return data?.user ? { user: data.user } : null;
-  } catch (error) {
-    console.error(`[Uploadthing Error] Server side session fetch failed: ${error}`)
+  } catch (_error) {
     return null;
   }
 }

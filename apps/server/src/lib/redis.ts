@@ -6,7 +6,7 @@ export const redisConnection: RedisOptions = {
   port: Number(process.env.REDIS_PORT),
   username: 'default',
   password: process.env.REDIS_PASSWORD,
-  family: 4, // Force IPv4 to avoid issues with Node 17+ preferring IPv6
+  // family: 4, // Commented out to allow IPv6 (Fly.io/Upstash often use IPv6)
   maxRetriesPerRequest: null, // Required for BullMQ
   connectTimeout: 30000, // Increase timeout to 30s
   keepAlive: 10000, // TCP KeepAlive every 10s
