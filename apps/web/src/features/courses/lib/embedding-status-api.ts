@@ -69,13 +69,38 @@ export function connectToSSEvents(
       } else if (data.type === "update") {
         
         // Invalidate and refetch when we get an update
-        queryClient.invalidateQueries({ queryKey: ["embedding-status", courseId] });
+        queryClient.setQueryData(["embedding-status", courseId], (oldData: EmbeddingStatusResponse | undefined) => {
+          if (!oldData) return oldData;
+          
+          return {
+            ...oldData,
+            documents: oldData.documents.map(doc => {
+              if (doc.docId === data.docId) {
+                return {
+                  ...doc,
+                  status: data.status,
+                  progress: data.progress,
+                  stage: data.stage,
+                  error: data.error,
+                  // If completed/failed, update the DB status too for UI consistency
+                  embeddingStatus: data.status === "completed" ? "SUCCESS" : 
+                                  data.status === "failed" ? "FAILED" : 
+                                  doc.embeddingStatus
+                };
+              }
+              return doc;
+            })
+          };
+        });
         
         // Show toast notification
         if (data.status === "completed") {
           toast.success("Document embedding completed!");
+          // Invalidate to ensure we get fresh data from server eventually
+          queryClient.invalidateQueries({ queryKey: ["embedding-status", courseId] });
         } else if (data.status === "failed") {
           toast.error(`Embedding failed: ${data.error || "Unknown error"}`);
+          queryClient.invalidateQueries({ queryKey: ["embedding-status", courseId] });
         }
       } else if (data.type === "heartbeat") {
         // console.log("💓 Heartbeat received");

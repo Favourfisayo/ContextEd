@@ -164,7 +164,7 @@ type fileMeta = {
 
 export async function deleteCourse(courseId: string, session: Session) {
 	const course = await getCourse(session, courseId)
-	const fileKeys = course.course_documents.map(doc => {
+	const fileKeys = course.course_documents.map((doc: any) => {
 		const file_metadata = doc.file_metadata as fileMeta
 
 		return file_metadata.key

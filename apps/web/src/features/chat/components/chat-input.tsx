@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef, type FormEvent, type KeyboardEvent } from "react";
 import { cn } from "@/lib/utils";
-
+import { useIsMobile } from "@/hooks/use-mobile";
 interface ChatInputProps {
 	onSend: (message: string) => void;
 	isSending?: boolean;
@@ -15,6 +15,7 @@ export function ChatInput({ onSend, isSending = false}: ChatInputProps) {
 	const [message, setMessage] = useState("");
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	const isMobile = useIsMobile()
 	const sendMessage = (e: FormEvent) => {
 		e.preventDefault();
 		if (!message.trim() || isSending) return;
@@ -72,9 +73,9 @@ export function ChatInput({ onSend, isSending = false}: ChatInputProps) {
 						)} />
 					</Button>
 				</div>
-				<p className="mt-2 text-xs text-center text-muted-foreground">
+				{!isMobile && <p className="mt-2 text-xs text-center text-muted-foreground">
 					Press Enter to send, <code>Shift+Enter</code> for new line
-				</p>
+				</p>}
 			</form>
 		</div>
 	);

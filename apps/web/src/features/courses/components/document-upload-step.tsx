@@ -70,13 +70,13 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 	};
 
 	return (
-		<div className="mx-auto w-full max-w-2xl space-y-8">
+		<div className="mx-auto w-full max-w-2xl space-y-6 sm:space-y-8 px-4 sm:px-0">
 			{/* Header */}
-			<div className="space-y-2">
-				<h2 className="text-2xl font-bold  text-gray-800">
+			<div className="space-y-2 text-center sm:text-left">
+				<h2 className="text-xl sm:text-2xl font-bold text-gray-800">
 					Upload Course Documents
 				</h2>
-				<p className="text-base text-gray-600">
+				<p className="text-sm sm:text-base text-gray-600">
 					Step 2: Upload up to {MAX_FILES} course documents (PDF, Word, CSV, Text)
 				</p>
 			</div>
@@ -125,23 +125,25 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 
 				{/* File Counter */}
 				{uploadedFiles.length > 0 && (
-					<p className="text-sm text-gray-600">
+					<p className="text-sm text-gray-600 font-medium">
 						{uploadedFiles.length} of {MAX_FILES} files uploaded
 					</p>
 				)}
 
 				{/* File List */}
 				{uploadedFiles.length > 0 && (
-					<div className="space-y-2">
+					<div className="space-y-3">
 						{uploadedFiles.map((file) => (
 							<div
 								key={file.key}
-								className="flex flex-col sm:flex-row sm:h-12 items-start sm:items-center justify-between gap-3 rounded border-2 border-green-300 bg-green-50 px-3 py-2"
+								className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg border border-green-200 bg-green-50/50 p-3 sm:px-4 sm:py-3 transition-all hover:bg-green-50"
 							>
-								<div className="flex items-start sm:items-center gap-3 w-full sm:w-auto">
-									<FileText className="h-4 w-4 text-green-600" />
-									<div className="flex flex-col min-w-0">
-										<span className="text-sm text-gray-700 truncate">
+								<div className="flex items-start gap-3 w-full sm:w-auto min-w-0">
+									<div className="p-2 bg-green-100 rounded-md shrink-0">
+										<FileText className="h-4 w-4 text-green-600" />
+									</div>
+									<div className="flex flex-col min-w-0 flex-1">
+										<span className="text-sm font-medium text-gray-900 truncate">
 											{file.name}
 										</span>
 										<span className="text-xs text-gray-500">
@@ -149,11 +151,12 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 										</span>
 									</div>
 								</div>
-								{/* TODO: Actually remove file from uploadthing */}
+								
 								<button
 									type="button"
 									onClick={() => handleFileRemove(file.url)}
-									className="text-gray-500 hover:text-red-600 self-end"
+									className="text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-md transition-colors self-end sm:self-center"
+									aria-label="Remove file"
 								>
 									<X className="h-4 w-4" />
 								</button>
@@ -171,12 +174,12 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 			</div>
 
 			{/* Action Buttons */}
-			<div className="flex justify-between">
+			<div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 pt-4">
 				<Button
 					type="button"
 					onClick={onBack}
 					variant="outline"
-					className="h-10 border-2 border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200"
+					className="h-11 sm:h-10 w-full sm:w-auto border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900"
 					disabled={createDocumentsMutation.isPending}
 				>
 					Back
@@ -185,7 +188,7 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 					type="button"
 					onClick={handleCreateCourse}
 					disabled={uploadedFiles.length === 0 || createDocumentsMutation.isPending}
-					className="h-10 border-2 border-blue-300 bg-blue-100 text-blue-600 hover:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
+					className="h-11 sm:h-10 w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 shadow-sm"
 				>
 					{createDocumentsMutation.isPending ? (
 						<Loader text="Finishing..."/>

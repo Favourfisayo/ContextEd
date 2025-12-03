@@ -13,10 +13,15 @@ export default [
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+        { 
+          argsIgnorePattern: "^_", 
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_"
+        },
       ],
       "@typescript-eslint/no-explicit-any": "off",
-      "no-useless-catch": "off"
+      "no-useless-catch": "off",
+      "no-empty": "off"
     },
   },
   {

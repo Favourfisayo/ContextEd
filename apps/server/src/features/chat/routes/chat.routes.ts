@@ -13,6 +13,7 @@ import {
   generateStreamingResponse,
   summarizeOldMessages,
 } from "../lib/chatService";
+import { refineQuery } from "../lib/queryRefiner";
 import { ExternalAPIError, UnauthorizedError, ValidationError, ForbiddenError, asyncHandler } from "@/lib/errors";
 import rateLimit from "express-rate-limit";
 
@@ -112,8 +113,9 @@ router.post("/chat/:courseId/messages", streamLimiter, requireAuth, asyncHandler
       const chatHistory = await getChatMessages(courseId);
       const formattedHistory = await summarizeOldMessages(chatHistory, 10);
 
-      // Step 2: Retrieve relevant context from embeddings
-      const context = await retrieveContext(courseId, userMessage, 5);
+      // Step 2: Refine query and retrieve relevant context
+      const refinedQuery = await refineQuery(formattedHistory, userMessage);
+      const context = await retrieveContext(courseId, refinedQuery, 5);
 
       // Step 3: Build prompt
       const course_metadata = {course_code: course.course_code, course_title: course.course_title, course_description: course.course_description}

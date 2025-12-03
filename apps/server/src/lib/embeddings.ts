@@ -10,12 +10,13 @@ if (!apiKey) {
 
 /**
  * Gemini embeddings instance
- * Using gemini-embedding-001
+ * Using text-embedding-004
  */
 export const embeddings = new GoogleGenerativeAIEmbeddings({
-  model: "gemini-embedding-001",
+  model: "text-embedding-004",
   taskType: TaskType.RETRIEVAL_DOCUMENT,
   title: "Documents Embedding",
+
 });
 
 /**

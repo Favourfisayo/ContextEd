@@ -63,6 +63,7 @@ export interface EmbeddingJobStatus {
   fileUrl: string;
   status: "waiting" | "active" | "completed" | "failed" | "unknown";
   progress?: number;
+  stage?: "ocr" | "embedding";
   error?: string;
   embeddingStatus: "PENDING" | "SUCCESS" | "FAILED";
 }

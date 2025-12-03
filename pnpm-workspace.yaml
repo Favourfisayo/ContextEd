@@ -15,4 +15,5 @@ onlyBuiltDependencies:
   - canvas
   - msgpackr-extract
   - prisma
+  - tesseract.js
   - unrs-resolver

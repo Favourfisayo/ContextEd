@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 //Timeout handler
-app.use(timeout("30s"))
+app.use(timeout("60s"))
 
 //RateLimiting handler
 const limiter = rateLimit({

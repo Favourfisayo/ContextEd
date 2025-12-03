@@ -10,8 +10,10 @@ import {
   getFileExtensionFromUrl, 
   getExtensionFromContentType 
 } from "./helpers/fileExtension";
+import { cleanDocuments } from "./helpers/textCleaner";
 
 import { DocumentProcessingError } from "@/lib/errors";
+import { needsOCR } from "./helpers/ocrHelper";
 
 // Automatically track and cleanup temp files
 temp.track();
@@ -44,18 +46,13 @@ const SUPPORTED_FORMATS = {
 
 type SupportedExtension = keyof typeof SUPPORTED_FORMATS;
 
-// /**
-//  * Check if a PDF has extractable text or needs OCR
-//  */
-export function needsOCR(documents: Document[]): boolean {
-  return documents.length === 0 || documents.every(doc => !doc.pageContent.trim());
-}
-
-
 /**
  * Load and parse document from a file URL
  */
-export async function loadDocument(fileUrl: string): Promise<Document[]> {
+export async function loadDocument(
+  fileUrl: string,
+  onProgress?: (progress: number) => void
+): Promise<Document[]> {
 
   // First try to get extension from URL
   let extension = getFileExtensionFromUrl(fileUrl);
@@ -96,11 +93,20 @@ export async function loadDocument(fileUrl: string): Promise<Document[]> {
     
     // Check if PDF is scanned/image-based (no extractable text)
     if (needsOCR(documents)) {
-      throw new DocumentProcessingError(
-        "This PDF appears to be scanned or image-based with no extractable text. " +
-        "OCR support for scanned PDFs is planned for a future update. " +
-        "For now, please upload a text-based PDF or convert your scanned document to text first."
-      );
+      console.log("PDF needs OCR, attempting extraction...");
+      try {
+        const { extractTextFromScannedPDF } = await import("./helpers/ocrHelper");
+        documents = await extractTextFromScannedPDF(finalFilePath, fileUrl, onProgress);
+        
+        if (documents.length === 0) {
+             throw new DocumentProcessingError("OCR failed to extract any text from the document.");
+        }
+      } catch (error) {
+         if (error instanceof DocumentProcessingError) throw error;
+         throw new DocumentProcessingError(
+            "Failed to perform OCR on scanned document: " + (error instanceof Error ? error.message : String(error))
+         );
+      }
     }
   } else {
     // Get the appropriate loader for other file types
@@ -130,9 +136,16 @@ export const textSplitter = new RecursiveCharacterTextSplitter({
 /**
  * Load, parse, and split a document into chunks
  */
-export async function loadAndSplitDocument(fileUrl: string): Promise<Document[]> {
-  const documents = await loadDocument(fileUrl);
-  const splitDocs = await textSplitter.splitDocuments(documents);
+export async function loadAndSplitDocument(
+  fileUrl: string,
+  onProgress?: (progress: number) => void
+): Promise<Document[]> {
+  const documents = await loadDocument(fileUrl, onProgress);
+  
+  // Clean documents before splitting
+  const cleanedDocs = cleanDocuments(documents);
+  
+  const splitDocs = await textSplitter.splitDocuments(cleanedDocs);
   
   return splitDocs;
 }
