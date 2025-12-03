@@ -111,7 +111,6 @@ apps/server/**/*.tsbuildinfo
 apps/server/**/next-env.d.ts
 
 apps/server/**/EMBEDDING_SETUP.md
-apps/server/**/ocrHelper.ts
 
 # flyctl launch added from apps/web/.gitignore
 # Dependencies
