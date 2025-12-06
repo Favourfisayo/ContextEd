@@ -7,10 +7,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useCreateCourseDocuments } from "@/features/courses/lib/mutations";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import { formatFileSize } from "../helpers/file_helpers";
 import Loader from "@/components/loader";
 import { getErrorMessage } from "@/lib/errors";
+import type { Route } from "next";
 
 interface DocumentUploadStepProps {
 	onBack: () => void;
@@ -83,7 +84,7 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 			{
 				onSuccess: () => {
 					toast.success("Course created successfully with documents!");
-					router.push(`/dashboard/courses/${courseId}`);
+					router.push(`/dashboard/courses/${courseId}` as Route);
 				},
 			}
 		);
@@ -155,8 +156,8 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 				)}
 
 				{/* File List */}
-				{uploadedFiles.length > 0 && (
-					<div className="space-y-3">
+				<Activity mode={uploadedFiles.length > 0 ? "visible" : "hidden"}>
+				<div className="space-y-3">
 						{uploadedFiles.map((file) => (
 							<div
 								key={file.key}
@@ -186,10 +187,10 @@ export function DocumentUploadStep({ onBack, courseId }: DocumentUploadStepProps
 								>
 									<X className="h-4 w-4" />
 								</button>
-							</div>
-						))}
-					</div>
-				)}
+				</div>
+				))}
+				</div>
+				</Activity>
 
 				{/* Empty State */}
 				{uploadedFiles.length === 0 && !canUploadMore && (

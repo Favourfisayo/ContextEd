@@ -9,6 +9,9 @@ export default [
       parserOptions: {
         projectService: true,
       },
+      globals: {
+        process: "readonly"
+      }
     },
     rules: {
       "@typescript-eslint/no-unused-vars": [

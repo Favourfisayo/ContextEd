@@ -1,5 +1,6 @@
 import { parseApiError } from "@/lib/errors";
 import { type CourseCreateInput, type CourseDocCreateInput, type CourseUpdateInput } from "@studyrag/shared-schemas";
+import * as Sentry from "@sentry/nextjs"
 const API_URL = process.env.NEXT_PUBLIC_SERVER_PROTECTED_URL;
 
 export interface Course {
@@ -81,6 +82,7 @@ export async function createCourseDocuments(
  * Get all courses for the authenticated user
  */
 export async function getCourses(): Promise<Course[]> {
+  try {
   const response = await fetch(`${API_URL}/courses`, {
     method: "GET",
     headers: {
@@ -95,6 +97,11 @@ export async function getCourses(): Promise<Course[]> {
 
   const result = await response.json();
   return result.data;
+  }catch(error) {
+    Sentry.logger.error(`Something went wrong while loading courses: ${error}`)
+    Sentry.captureException(error)
+    return []
+  }
 }
 
 /**
