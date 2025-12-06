@@ -49,3 +49,6 @@ jobs:
 
       - name: Run tests
         run: pnpm run test
+        
+      - name: Deploy fly backend
+        run: fly deploy

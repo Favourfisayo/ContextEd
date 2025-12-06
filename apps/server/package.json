@@ -23,6 +23,7 @@
     "@langchain/core": "^1.0.6",
     "@langchain/google-genai": "^2.0.0",
     "@langchain/textsplitters": "^1.0.0",
+    "@sentry/node": "^10.29.0",
     "@studyRAG/db": "workspace:*",
     "@studyrag/shared-schemas": "workspace:*",
     "better-auth": "^1.4.4",
