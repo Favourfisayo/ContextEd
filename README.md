@@ -22,10 +22,10 @@ ContextEd is an intelligent study companion that allows students to upload cours
 - Context-aware conversations based on uploaded course materials
 - Real-time streaming responses with Server-Sent Events (SSE)
 - Two chat modes:
-  - **Tutorial Mode**: Detailed, educational explanations with follow-up questions
-  - **Concise Mode**: Brief, direct answers
+  - **Academic mode**: Detailed, educational explanations, your typical academic professor style explanations.
+  - **Casual Mode**: Brief, direct answers with analogies, and also a follow up  project idea to make sure you understand the concept.
 - Automatic query refinement for better search results
-- Chat history management with automatic summarization
+- Chat history management with automatic summarization to prevent context bloats
 - Persistent message storage across sessions
 
 ### 🔐 **Authentication & Security**
@@ -37,7 +37,7 @@ ContextEd is an intelligent study companion that allows students to upload cours
 
 ### 🚀 **Advanced Technology**
 - **RAG (Retrieval Augmented Generation)**: Uses ChromaDB vector store for semantic search
-- **Document Processing**: Automatic text extraction with OCR support for images
+- **Document Processing**: Automatic text extraction with OCR support for images with tesseract.js
 - **Background Jobs**: BullMQ-powered queue system for async document processing
 - **Real-time Updates**: SSE for embedding progress and chat responses
 - **Monitoring**: Sentry integration for error tracking and performance monitoring
@@ -118,7 +118,7 @@ Before you begin, ensure you have the following installed:
    - Create OAuth 2.0 credentials
 
 2. **Google AI API** - For embeddings and chat
-   - Get API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Get API key from [Google AI Studio](https://aistudio.google.com/app/api-keys)
 
 3. **UploadThing** - For file uploads
    - Sign up at [UploadThing](https://uploadthing.com/)
