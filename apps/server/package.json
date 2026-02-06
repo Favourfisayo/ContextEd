@@ -20,7 +20,7 @@
     "@auth/prisma-adapter": "^2.11.1",
     "@google/generative-ai": "^0.24.1",
     "@langchain/community": "^1.0.4",
-    "@langchain/core": "^1.0.6",
+    "@langchain/core": "^1.1.8",
     "@langchain/google-genai": "^2.0.0",
     "@langchain/textsplitters": "^1.0.0",
     "@sentry/node": "^10.29.0",
