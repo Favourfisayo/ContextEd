@@ -28,7 +28,7 @@
     "@uploadthing/react": "^7.3.3",
     "@vercel/analytics": "^1.6.1",
     "babel-plugin-react-compiler": "^1.0.0",
-    "better-auth": "^1.4.4",
+    "better-auth": "^1.4.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
